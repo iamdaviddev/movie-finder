@@ -42,9 +42,9 @@ export default function MovieDetails() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Header className="mb-16" />
+      <Header />
       
-      <div className="flex flex-col md:flex-row gap-8 mb-12">
+      <div className="flex flex-col md:flex-row gap-8 mt-12 mb-12">
         <div className="md:w-1/3">
           <Image
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
