@@ -49,7 +49,11 @@ export function InfiniteScrollMovies({
         } else {
           response = await fetchPopularMovies(page);
         }
-        setMovies((prev) => [...prev, ...response.results]);
+        setMovies((prev) => {
+          const existingIds = new Set(prev.map((m) => m.id));
+          const newMovies = response.results.filter((m: Movies) => !existingIds.has(m.id));
+          return [...prev, ...newMovies];
+        });
       } catch (error) {
         console.error("Error fetching movies:", error);
       } finally {

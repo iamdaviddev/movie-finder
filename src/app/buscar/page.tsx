@@ -39,7 +39,12 @@ export default function SearchPage() {
           className="text-dark-textSecondary text-sm hover:text-dark-text transition-colors duration-200 inline-block order-2 sm:order-1" 
           href="/"
         >
-          Home
+          <span 
+            className="font-bold"
+            style={{ color: 'var(--color-accent)' }}
+          >
+            Voltar para a página inicial  
+          </span>
         </Link>
         <div className="w-full sm:w-auto sm:flex-1 sm:max-w-md lg:max-w-lg order-1 sm:order-2">
           <SearchBar initialValue={query} />

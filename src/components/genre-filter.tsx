@@ -1,13 +1,12 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { fetchGenres } from '@/services/tmdb';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import type { Genre } from '@/types/movies';
 
 export function GenreFilter() {
-  const [genres, setGenres] = useState<any[]>([]);
+  const [genres, setGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     const loadGenres = async () => {
