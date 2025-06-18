@@ -1,14 +1,16 @@
-'use client';
+'use client'
+
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { fetchMoviesByGenre, fetchGenres } from '@/services/tmdb';
 import { InfiniteScrollMovies } from '@/components/infinite-scroll-movies';
+import { Genre, SearchMoviesResponse } from '@/types/movies';
 
 export default function GenrePage() {
   const params = useParams();
   const genreId = Number(params.genreId);
   const [genreName, setGenreName] = useState('');
-  const [initialData, setInitialData] = useState<any>(null);
+  const [initialData, setInitialData] = useState<SearchMoviesResponse | null >(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -20,7 +22,7 @@ export default function GenrePage() {
           fetchMoviesByGenre(genreId),
         ]);
         
-        const genre = genresData.genres.find((g: any) => g.id === genreId);
+        const genre = genresData.genres.find((g: Genre) => g.id === genreId);
         setGenreName(genre?.name || 'Gênero');
         setInitialData(moviesData);
       } catch (error) {
