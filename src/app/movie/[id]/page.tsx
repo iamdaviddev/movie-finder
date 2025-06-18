@@ -111,21 +111,26 @@ export default function MovieDetails() {
             {movie.overview || 'Sinopse não disponível.'}
           </p>
 
-          {movie.videos.results.length > 0 && (
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--color-text)' }}>
-                Trailer
-              </h2>
-              <div className="aspect-w-16 aspect-h-9">
-                <iframe
-                  src={`https://www.youtube.com/embed/${movie.videos.results[0].key}`}
-                  className="w-full h-64 md:h-96 rounded-lg"
-                  style={{ border: '2px solid var(--color-border)' }}
-                  allowFullScreen
-                />
+          {movie.videos.results && movie.videos.results.length > 0 && (() => {
+            const trailer = movie.videos.results.find(
+              (video) => video.site === 'YouTube' && video.type === 'Trailer'
+            );
+            return trailer ? (
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--color-text)' }}>
+                  Trailer
+                </h2>
+                <div className="aspect-w-16 aspect-h-9">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${trailer.key}`}
+                    className="w-full h-64 md:h-96 rounded-lg"
+                    style={{ border: '2px solid var(--color-border)' }}
+                    allowFullScreen
+                  />
+                </div>
               </div>
-            </div>
-          )}
+            ) : null;
+          })()}
         </div>
       </div>
 
