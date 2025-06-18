@@ -29,12 +29,12 @@ export function GenreFilter() {
   return (
     <div className="mb-8">
       <h3 className="text-lg font-semibold mb-3">Filtrar por Gênero</h3>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 w-full">
         {genres.map((genre) => (
           <Link
             key={genre.id}
             href={`/genero/${genre.id}`}
-            className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-800 hover:bg-gray-300 transition"
+            className="relative z-10 px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-800 hover:bg-gray-300 transition"
           >
             {genre.name}
           </Link>

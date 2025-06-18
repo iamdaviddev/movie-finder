@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { fetchMoviesByGenre, fetchGenres } from '@/services/tmdb';
 import { InfiniteScrollMovies } from '@/components/infinite-scroll-movies';
 import { Genre, SearchMoviesResponse } from '@/types/movies';
+import { Header } from '@/components/header';
 
 export default function GenrePage() {
   const params = useParams();
@@ -46,6 +47,7 @@ export default function GenrePage() {
         </div>
       ) : initialData ? (
         <>
+          <Header/>
           <h1
             className="text-2xl font-bold mb-6"
             style={{ color: 'var(--color-accent)' }}
@@ -59,12 +61,15 @@ export default function GenrePage() {
           />
         </>
       ) : (
-        <div
-          className="text-center py-12"
-          style={{ color: 'var(--color-warning)' }}
-        >
-          Gênero não encontrado
-        </div>
+        <>
+          <Header/>
+          <div
+            className="text-center py-12"
+            style={{ color: 'var(--color-warning)' }}
+          >
+            Gênero não encontrado
+          </div>
+        </>
       )}
     </div>
   );
