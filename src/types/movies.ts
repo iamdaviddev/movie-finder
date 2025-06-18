@@ -10,6 +10,29 @@ export interface Movies {
   runtime?: number;
 }
 
+export interface Video {
+  key: string;
+  name: string;
+  site: string;
+  type: string;
+}
+
+export interface MovieDetails {
+  id: number;
+  title: string;
+  overview: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
+  release_date: string;
+  vote_average: number;
+  runtime: number;
+  genres: Genre[];
+  tagline: string;
+  videos: {
+    results: Video[];
+  };
+}
+
 export interface Genre {
   id: number;
   name: string;

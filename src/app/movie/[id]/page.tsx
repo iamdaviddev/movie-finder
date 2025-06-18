@@ -1,27 +1,33 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { api, fetchMovieDetails } from '@/services/tmdb';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { MovieCard } from '@/components/movie-card';
-import { Movies } from '@/types/movies';
+import type { Genre, Movies, MovieDetails } from '@/types/movies';
 import { Header } from '@/components/header';
 
 export default function MovieDetails() {
   const params = useParams();
   const router = useRouter();
-  const [movie, setMovie] = useState<any>(null);
+  const movieId = typeof params.id === 'string' ? params.id : Array.isArray(params.id) ? params.id[0] : '';
+
+  const [movie, setMovie] = useState<MovieDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [similarMovies, setSimilarMovies] = useState<Movies[]>([]);
 
   useEffect(() => {
+    if (!movieId) return;
+
     const loadData = async () => {
       try {
         setLoading(true);
-        const data = await fetchMovieDetails(params.id as string);
+
+        const data = await fetchMovieDetails(movieId);
         setMovie(data);
-        
-        const similar = await api.get(`/movie/${params.id}/similar`);
+
+        const similar = await api.get(`/movie/${movieId}/similar`);
         setSimilarMovies(similar.data.results.slice(0, 5));
       } catch (error) {
         console.error('Error loading movie:', error);
@@ -32,44 +38,60 @@ export default function MovieDetails() {
     };
 
     loadData();
-  }, [params.id]);
+  }, [movieId, router]);
 
-  if (loading) return (
-    <div style={{ color: 'var(--color-warning)' }} className="text-center py-12">
-      Carregando...
-    </div>
-  );
+  if (loading) {
+    return (
+      <div style={{ color: 'var(--color-warning)' }} className="text-center py-12">
+        Carregando...
+      </div>
+    );
+  }
+
+  if (!movie) {
+    return (
+      <div className="text-center py-12 text-red-500">
+        Filme não encontrado.
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
       <Header />
-      
+
       <div className="flex flex-col md:flex-row gap-8 mt-12 mb-12">
         <div className="md:w-1/3">
-          <Image
-            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            alt={movie.title}
-            width={500}
-            height={750}
-            className="rounded-lg shadow-lg w-full"
-            priority
-          />
+          {movie.poster_path ? (
+            <Image
+              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+              alt={movie.title}
+              width={500}
+              height={750}
+              className="rounded-lg shadow-lg w-full"
+              priority
+            />
+          ) : (
+            <div className="w-full h-[750px] bg-gray-800 flex items-center justify-center rounded-lg text-white">
+              Imagem indisponível
+            </div>
+          )}
         </div>
-        
+
         <div className="md:w-2/3">
           <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--color-text)' }}>
             {movie.title}
           </h1>
 
           <div className="flex flex-wrap gap-2 mb-4">
-            {movie.genres.map((genre: any) => (
+            {movie.genres?.map((genre: Genre) => (
               <span
                 key={genre.id}
+                className="px-3 py-1 rounded-full text-sm"
                 style={{
                   backgroundColor: 'var(--color-hover)',
                   color: 'var(--color-text-secondary)',
                 }}
-                className="px-3 py-1 rounded-full text-sm"
               >
                 {genre.name}
               </span>
@@ -77,19 +99,19 @@ export default function MovieDetails() {
           </div>
 
           <div className="flex items-center gap-4 mb-6 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-            <span>⭐ {movie.vote_average.toFixed(1)}/10</span>
+            <span>⭐ {movie.vote_average?.toFixed(1)}/10</span>
             <span>{movie.runtime} minutos</span>
-            <span>{movie.release_date.split('-')[0]}</span>
+            <span>{movie.release_date?.split('-')[0]}</span>
           </div>
 
           <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--color-text)' }}>
             Sinopse
           </h2>
           <p className="mb-6" style={{ color: 'var(--color-text-secondary)' }}>
-            {movie.overview}
+            {movie.overview || 'Sinopse não disponível.'}
           </p>
 
-          {movie.videos?.results?.length > 0 && (
+          {movie.videos.results.length > 0 && (
             <div className="mb-6">
               <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--color-text)' }}>
                 Trailer

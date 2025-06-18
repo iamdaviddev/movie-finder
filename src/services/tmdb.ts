@@ -1,3 +1,4 @@
+import { MovieDetails } from "@/types/movies";
 import axios from "axios";
 
 export const api = axios.create({
@@ -33,7 +34,7 @@ export const fetchGenres = async () => {
 };
 
 
-export const fetchMovieDetails = async (id: string) => {
+export const fetchMovieDetails = async (id: string): Promise<MovieDetails> => {
   const response = await api.get(`/movie/${id}`, {
     params: { append_to_response: "credits,videos" }
   });
