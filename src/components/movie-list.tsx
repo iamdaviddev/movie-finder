@@ -1,10 +1,12 @@
-'use client';
+'use client'
+
 import { InfiniteScrollMovies } from './infinite-scroll-movies';
 import { fetchPopularMovies } from '@/services/tmdb';
 import { useEffect, useState } from 'react';
+import { SearchMoviesResponse } from '@/types/movies';
 
 export function MovieList() {
-  const [initialData, setInitialData] = useState<any>(null);
+  const [initialData, setInitialData] = useState<SearchMoviesResponse | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
