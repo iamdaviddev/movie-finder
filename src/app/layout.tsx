@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bebas_Neue } from "next/font/google";
 import "./globals.css";
+import { Footer } from "@/components/footer";
 
 const bebas = Bebas_Neue({
   subsets: ['latin'],
@@ -24,6 +25,7 @@ export default function RootLayout({
         className={`${bebas.className} antialiased`}
       >
         {children}
+        <Footer/>
       </body>
     </html>
   );

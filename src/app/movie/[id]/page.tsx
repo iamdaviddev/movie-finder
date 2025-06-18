@@ -26,7 +26,7 @@ export default function MovieDetails() {
 
         const data = await fetchMovieDetails(movieId);
         setMovie(data);
-
+        console.log('Videos:', data.videos);
         const similar = await api.get(`/movie/${movieId}/similar`);
         setSimilarMovies(similar.data.results.slice(0, 5));
       } catch (error) {

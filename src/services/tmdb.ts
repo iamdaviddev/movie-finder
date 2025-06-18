@@ -33,10 +33,7 @@ export const fetchGenres = async () => {
   return response.data;
 };
 
-
 export const fetchMovieDetails = async (id: string): Promise<MovieDetails> => {
-  const response = await api.get(`/movie/${id}`, {
-    params: { append_to_response: "credits,videos" }
-  });
+  const response = await api.get(`/movie/${id}?append_to_response=videos`);
   return response.data;
 };
