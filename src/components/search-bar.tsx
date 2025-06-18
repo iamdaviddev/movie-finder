@@ -1,11 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-export function SearchBar() {
-  const [query, setQuery] = useState('');
+interface SearchBarProps {
+  initialValue?: string;
+}
+
+export function SearchBar({ initialValue = '' }: SearchBarProps) {
+  const [query, setQuery] = useState(initialValue);
   const router = useRouter();
+
+  useEffect(() => {
+    setQuery(initialValue);
+  }, [initialValue]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

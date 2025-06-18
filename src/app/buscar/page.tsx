@@ -6,11 +6,12 @@ import { searchMovies } from '@/services/tmdb';
 import { InfiniteScrollMovies } from '@/components/infinite-scroll-movies';
 import { SearchBar } from '@/components/search-bar';
 import Link from 'next/link';
+import { SearchMoviesResponse } from '@/types/movies';
 
 export default function SearchPage() {
   const searchParams = useSearchParams();
   const query = searchParams.get('query') || '';
-  const [initialData, setInitialData] = useState<any>(null);
+  const [initialData, setInitialData] = useState<SearchMoviesResponse | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -33,7 +34,6 @@ export default function SearchPage() {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 mb-6 sm:mb-8">
         <Link 
           className="text-dark-textSecondary text-sm hover:text-dark-text transition-colors duration-200 inline-block order-2 sm:order-1" 
